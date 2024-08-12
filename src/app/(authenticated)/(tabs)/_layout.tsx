@@ -9,6 +9,12 @@ const _layout = () => {
     >
       <Tabs.Screen name="index" />
       <Tabs.Screen name="favorite" />
+      <Tabs.Screen
+        name="empty"
+        listeners={() => ({
+          tabPress: (e) => e.preventDefault(),
+        })}
+      />
       <Tabs.Screen name="inbox" />
       <Tabs.Screen name="profile" />
     </Tabs>

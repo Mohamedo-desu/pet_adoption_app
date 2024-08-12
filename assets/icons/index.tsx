@@ -1,3 +1,4 @@
+import Fab from "@/components/Home/Fab";
 import { moderateScale } from "react-native-size-matters";
 import { BubbleChatIcon, FavouriteIcon, HomeIcon, UserIcon } from "./icons";
 
@@ -24,6 +25,10 @@ export const icons: {
       />
     );
   },
+  empty: (): JSX.Element => {
+    return <Fab />;
+  },
+
   inbox: (props: { isFocused: boolean; color: string }): JSX.Element => {
     return (
       <BubbleChatIcon

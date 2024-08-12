@@ -86,7 +86,7 @@ const Slider: React.FC = () => {
         keyExtractor={(item) => item.name}
         data={sliders}
         renderItem={renderItem}
-        style={styles.container}
+        style={styles.flatList}
         initialScrollIndex={0}
         getItemLayout={(data, index) => ({
           length: Dimensions.get("window").width,
@@ -117,7 +117,7 @@ const Slider: React.FC = () => {
 export default Slider;
 
 const styles = StyleSheet.create({
-  container: {
+  flatList: {
     flexGrow: 0,
   },
   image: {

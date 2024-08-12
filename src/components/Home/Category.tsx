@@ -1,7 +1,13 @@
 import { db } from "@/config/firebaseconfig";
 import { Colors } from "@/constants/colors";
 import { collection, getDocs } from "firebase/firestore";
-import { useCallback, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {
   FlatList,
   Image,
@@ -11,23 +17,25 @@ import {
   View,
 } from "react-native";
 import { moderateScale } from "react-native-size-matters";
-const Category = () => {
-  const [categories, setCategories] = useState<
-    {
-      name: string;
-      imageUrl: string;
-    }[]
-  >([]);
-  const [selectedCategory, setSelectedCategory] = useState("Dogs");
+
+type categories = {
+  name: string;
+  imageUrl: string;
+};
+
+interface comProps {
+  selectedCategory: string;
+  setSelectedCategory: Dispatch<SetStateAction<string>>;
+}
+const Category = ({ selectedCategory, setSelectedCategory }: comProps) => {
+  const [categories, setCategories] = useState<categories[]>([]);
+
   const getCategories = async () => {
     try {
       const categoriesRef = collection(db, "pet_categories");
       const snapshot = await getDocs(categoriesRef);
 
-      const categories = snapshot.docs.map((doc) => doc.data()) as {
-        name: string;
-        imageUrl: string;
-      }[];
+      const categories = snapshot.docs.map((doc) => doc.data()) as categories[];
       setCategories(categories);
     } catch (error) {
       console.log(error);
@@ -69,7 +77,6 @@ const Category = () => {
       <FlatList
         numColumns={4}
         showsHorizontalScrollIndicator={false}
-        pagingEnabled
         keyExtractor={(item) => item.name}
         data={categories}
         renderItem={renderItem}
@@ -81,13 +88,10 @@ const Category = () => {
 };
 export default Category;
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: moderateScale(10),
-  },
+  container: {},
   text: {
     fontFamily: "Medium",
     fontSize: moderateScale(20),
-    paddingHorizontal: moderateScale(10),
     marginBottom: moderateScale(10),
   },
   image: {
@@ -100,7 +104,7 @@ const styles = StyleSheet.create({
     padding: moderateScale(15),
     alignItems: "center",
     borderWidth: 1,
-    borderRadius: moderateScale(15),
+    borderRadius: 10,
     borderColor: Colors.primary,
   },
   columnWrapperStyle: { gap: moderateScale(10) },
