@@ -1,16 +1,36 @@
 {
   "expo": {
-    "name": "pet-adoption-app",
+    "name": "Pets Adoption",
     "slug": "pet-adoption-app",
+    "scheme": "petsadop",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#E8B20E"
+    },
+    "icon": "./assets/images/icon.png",
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.example.with-new-arch"
+      "supportsTablet": true
     },
     "android": {
-      "package": "com.example.withnewarch"
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#E8B20E"
+      },
+      "package": "com.mohamedodesu.petadoptionapp"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "bundler": "metro"
     },
     "plugins": [
       [
@@ -23,7 +43,30 @@
             "newArchEnabled": true
           }
         }
-      ]
-    ]
+      ],
+      [
+        "expo-updates",
+        {
+          "username": "mohamedo-desu"
+        }
+      ],
+      "expo-router",
+      "expo-font",
+      "expo-secure-store"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "3ca85a88-0491-49e7-9271-177ed7f577f7"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/3ca85a88-0491-49e7-9271-177ed7f577f7"
+    }
   }
 }
