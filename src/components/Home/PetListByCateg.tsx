@@ -1,29 +1,25 @@
 import { db } from "@/config/firebaseconfig";
 import { Colors } from "@/constants/colors";
+import { useRouter } from "expo-router";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Dimensions,
   FlatList,
   Image,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { moderateScale } from "react-native-size-matters";
+
+import { PETPROPS } from "@/types/pet";
+import debounce from "@/utils";
 import Category from "./Category";
 
-interface Pet {
-  age: string;
-  breed: string;
-  category: string;
-  imageUrl: string;
-  name: string;
-  sex: string;
-}
-
 const PetListByCateg = () => {
-  const [petLists, setPetLists] = useState<Pet[]>([]);
+  const [petLists, setPetLists] = useState<PETPROPS[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("Dogs");
 
@@ -36,7 +32,7 @@ const PetListByCateg = () => {
         query(categoriesRef, where("category", "==", category))
       );
 
-      const pets = q.docs.map((doc) => doc.data()) as Pet[];
+      const pets = q.docs.map((doc) => doc.data()) as PETPROPS[];
 
       setPetLists(pets);
       setLoading(false);
@@ -46,24 +42,37 @@ const PetListByCateg = () => {
     }
   };
 
-  useEffect(() => {
-    getPetList(selectedCategory);
-  }, [selectedCategory]);
+  const debouncedGetPetList = useMemo(() => debounce(getPetList, 500), []);
 
-  const renderItem = useCallback(({ item }: { item: Pet }) => {
+  useEffect(() => {
+    debouncedGetPetList(selectedCategory);
+  }, [debouncedGetPetList, selectedCategory]);
+
+  const router = useRouter();
+
+  const renderItem = useCallback(({ item }: { item: PETPROPS }) => {
     if (!item) return null;
 
     return (
-      <View style={styles.pet}>
+      <TouchableOpacity
+        onPress={() =>
+          router.push({
+            pathname: "/pet_details",
+            params: { item: JSON.stringify(item) },
+          })
+        }
+        style={styles.pet}
+      >
         <Image source={{ uri: item.imageUrl }} style={styles.image} />
         <Text style={styles.name}>{item.name}</Text>
         <View style={styles.info}>
           <Text style={styles.breed}>{item.breed}</Text>
           <Text style={styles.age}>{item.age} YRS</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }, []);
+
   const ListEmptyComponent = useCallback(() => {
     return (
       <View
@@ -81,6 +90,7 @@ const PetListByCateg = () => {
       </View>
     );
   }, []);
+
   return (
     <View style={styles.container}>
       <Category
@@ -100,7 +110,9 @@ const PetListByCateg = () => {
     </View>
   );
 };
+
 export default PetListByCateg;
+
 const styles = StyleSheet.create({
   flatList: {
     flexGrow: 0,

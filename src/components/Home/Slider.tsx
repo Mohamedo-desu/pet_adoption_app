@@ -1,4 +1,3 @@
-// Slider.tsx
 import { db } from "@/config/firebaseconfig";
 import { Colors } from "@/constants/colors";
 import { collection, getDocs } from "firebase/firestore";
