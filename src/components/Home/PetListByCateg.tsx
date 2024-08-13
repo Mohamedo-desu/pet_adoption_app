@@ -15,7 +15,7 @@ import {
 import { moderateScale } from "react-native-size-matters";
 
 import { PETPROPS } from "@/types/pet";
-import debounce from "@/utils";
+import debounce from "@/utils/functions";
 import Category from "./Category";
 
 const PetListByCateg = () => {
@@ -55,6 +55,7 @@ const PetListByCateg = () => {
 
     return (
       <TouchableOpacity
+        activeOpacity={0.8}
         onPress={() =>
           router.push({
             pathname: "/pet_details",
@@ -84,12 +85,14 @@ const PetListByCateg = () => {
           width: Dimensions.get("window").width,
         }}
       >
-        <Text style={{ fontFamily: "Medium", color: Colors.gray }}>
-          No pets found
-        </Text>
+        {!loading && (
+          <Text style={{ fontFamily: "Medium", color: Colors.gray }}>
+            No pets found
+          </Text>
+        )}
       </View>
     );
-  }, []);
+  }, [loading]);
 
   return (
     <View style={styles.container}>
@@ -106,6 +109,7 @@ const PetListByCateg = () => {
         data={petLists}
         renderItem={renderItem}
         style={styles.flatList}
+        contentContainerStyle={styles.contentContainerStyle}
       />
     </View>
   );
@@ -117,8 +121,11 @@ const styles = StyleSheet.create({
   flatList: {
     flexGrow: 0,
   },
-  container: {
+  contentContainerStyle: {
+    gap: moderateScale(10),
     paddingHorizontal: moderateScale(10),
+  },
+  container: {
     gap: moderateScale(12),
   },
   name: {
@@ -138,8 +145,8 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(10),
   },
   image: {
-    width: moderateScale(150),
-    height: moderateScale(135),
+    width: moderateScale(140),
+    height: moderateScale(125),
     resizeMode: "cover",
     borderRadius: moderateScale(10),
   },

@@ -1,28 +1,25 @@
-import { FavouriteIcon } from "@/assets/icons/icons";
 import { Colors } from "@/constants/colors";
 import { PETPROPS } from "@/types/pet";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { moderateScale } from "react-native-size-matters";
+import MarkFav from "../MarkFav";
 
 const PetInfo = ({ pet }: { pet: PETPROPS }) => {
   return (
-    <View>
+    <>
       <Image source={{ uri: pet.imageUrl }} style={styles.image} />
       <View style={styles.infoContainer}>
-        <View>
-          <Text style={styles.name}>{pet.name}</Text>
-          <Text style={styles.address}>
-            {pet.address || "Placeholder Address, City"}
+        <View style={styles.petTexts}>
+          <Text style={styles.name} numberOfLines={2}>
+            {pet.name}
+          </Text>
+          <Text style={styles.address} numberOfLines={2}>
+            {pet.address}
           </Text>
         </View>
-        <FavouriteIcon
-          strokeWidth={2}
-          color={Colors.primary}
-          width={moderateScale(25)}
-          height={moderateScale(25)}
-        />
+        <MarkFav pet={pet} />
       </View>
-    </View>
+    </>
   );
 };
 
@@ -39,14 +36,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    gap: moderateScale(35),
   },
+  petTexts: { flex: 1 },
   name: {
     fontFamily: "Bold",
-    fontSize: moderateScale(22),
+    fontSize: moderateScale(18),
   },
   address: {
     fontFamily: "Regular",
-    fontSize: moderateScale(16),
+    fontSize: moderateScale(14),
     color: Colors.gray,
   },
 });

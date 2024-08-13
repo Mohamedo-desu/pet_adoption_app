@@ -5,7 +5,7 @@ import PetSubInfoCard from "./PetSubInfoCard";
 
 const PetSubInfo = ({ pet }: { pet: PETPROPS }) => {
   return (
-    <View style={styles.container}>
+    <>
       <View style={styles.row}>
         <PetSubInfoCard
           icon={require("@/assets/images/calendar.png")}
@@ -27,10 +27,10 @@ const PetSubInfo = ({ pet }: { pet: PETPROPS }) => {
         <PetSubInfoCard
           icon={require("@/assets/images/weight.png")}
           title={"Weight"}
-          value={pet.weight}
+          value={pet.weight + " Kg"}
         />
       </View>
-    </View>
+    </>
   );
 };
 
@@ -45,5 +45,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: moderateScale(10),
+    paddingHorizontal: moderateScale(10),
+    marginBottom: moderateScale(10),
   },
 });

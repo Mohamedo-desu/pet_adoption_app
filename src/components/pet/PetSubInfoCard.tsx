@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
-    width: moderateScale(35),
+    width: moderateScale(30),
     aspectRatio: 1,
   },
   textContainer: {
@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "Regular",
-    fontSize: moderateScale(14),
+    fontSize: moderateScale(11),
     color: Colors.gray,
   },
   value: {
     fontFamily: "Medium",
-    fontSize: moderateScale(15),
+    fontSize: moderateScale(13),
   },
 });

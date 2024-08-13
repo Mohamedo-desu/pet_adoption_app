@@ -72,7 +72,7 @@ const Category = ({ selectedCategory, setSelectedCategory }: comProps) => {
   }, []);
 
   return (
-    <View style={{}}>
+    <View style={{ paddingHorizontal: moderateScale(10) }}>
       <Text style={styles.text}>Category</Text>
       <FlatList
         numColumns={4}
