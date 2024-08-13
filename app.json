@@ -5,9 +5,7 @@
     "scheme": "petsadop",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "experiments": {
       "typedRoutes": true,
       "tsconfigPaths": true
@@ -48,6 +46,12 @@
         "expo-updates",
         {
           "username": "mohamedo-desu"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share your pets with others and help them find a loving home."
         }
       ],
       "expo-router",

@@ -22,3 +22,8 @@ export interface SUBINFOCARDPROPS {
   title: string;
   value: string;
 }
+
+export type CATEGPROPS = {
+  name: string;
+  imageUrl: string;
+};

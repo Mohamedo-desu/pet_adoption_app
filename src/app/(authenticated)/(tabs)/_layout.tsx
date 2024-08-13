@@ -3,12 +3,9 @@ import { Tabs } from "expo-router";
 import { StyleSheet } from "react-native";
 const _layout = () => {
   return (
-    <Tabs
-      tabBar={(props: any) => <TabBar {...props} />}
-      screenOptions={{ headerShown: false }}
-    >
-      <Tabs.Screen name="index" />
-      <Tabs.Screen name="favorite" />
+    <Tabs tabBar={(props: any) => <TabBar {...props} />}>
+      <Tabs.Screen name="index" options={{ headerShown: false }} />
+      <Tabs.Screen name="favorite" options={{ title: "Favorite Pets" }} />
       <Tabs.Screen
         name="empty"
         listeners={() => ({

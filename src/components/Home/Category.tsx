@@ -1,5 +1,6 @@
 import { db } from "@/config/firebaseconfig";
 import { Colors } from "@/constants/colors";
+import { CATEGPROPS } from "@/types/pet";
 import { collection, getDocs } from "firebase/firestore";
 import {
   Dispatch,
@@ -18,24 +19,19 @@ import {
 } from "react-native";
 import { moderateScale } from "react-native-size-matters";
 
-type categories = {
-  name: string;
-  imageUrl: string;
-};
-
 interface comProps {
   selectedCategory: string;
   setSelectedCategory: Dispatch<SetStateAction<string>>;
 }
 const Category = ({ selectedCategory, setSelectedCategory }: comProps) => {
-  const [categories, setCategories] = useState<categories[]>([]);
+  const [categories, setCategories] = useState<CATEGPROPS[]>([]);
 
   const getCategories = async () => {
     try {
       const categoriesRef = collection(db, "pet_categories");
       const snapshot = await getDocs(categoriesRef);
 
-      const categories = snapshot.docs.map((doc) => doc.data()) as categories[];
+      const categories = snapshot.docs.map((doc) => doc.data()) as CATEGPROPS[];
       setCategories(categories);
     } catch (error) {
       console.log(error);
@@ -72,7 +68,7 @@ const Category = ({ selectedCategory, setSelectedCategory }: comProps) => {
   }, []);
 
   return (
-    <View style={{ paddingHorizontal: moderateScale(10) }}>
+    <>
       <Text style={styles.text}>Category</Text>
       <FlatList
         numColumns={4}
@@ -80,19 +76,21 @@ const Category = ({ selectedCategory, setSelectedCategory }: comProps) => {
         keyExtractor={(item) => item.name}
         data={categories}
         renderItem={renderItem}
-        style={styles.container}
+        contentContainerStyle={styles.contentContainerStyle}
         columnWrapperStyle={styles.columnWrapperStyle}
       />
-    </View>
+    </>
   );
 };
 export default Category;
 const styles = StyleSheet.create({
-  container: {},
+  contentContainerStyle: {
+    paddingHorizontal: moderateScale(10),
+  },
   text: {
     fontFamily: "Medium",
     fontSize: moderateScale(20),
-    marginBottom: moderateScale(10),
+    paddingHorizontal: moderateScale(10),
   },
   image: {
     width: moderateScale(40),

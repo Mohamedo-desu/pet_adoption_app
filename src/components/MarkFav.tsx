@@ -6,9 +6,17 @@ import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable } from "react-native";
 import { moderateScale } from "react-native-size-matters";
-const MarkFav = ({ pet }: { pet: PETPROPS }) => {
+const MarkFav = ({
+  pet,
+  color = Colors.gray,
+  size = moderateScale(30),
+}: {
+  pet: PETPROPS;
+  color?: string;
+  size?: number;
+}) => {
   const { user } = useUser();
-  const [favList, setFavList] = useState([]);
+  const [favList, setFavList] = useState<any>();
   const [loading, setLoading] = useState(false);
 
   const getFav = async () => {
@@ -44,15 +52,11 @@ const MarkFav = ({ pet }: { pet: PETPROPS }) => {
         <ActivityIndicator size={"small"} color={Colors.primary} />
       ) : favList?.includes(pet.id) ? (
         <Pressable onPress={() => updateFav("remove")}>
-          <AntDesign name="heart" color={Colors.red} size={moderateScale(30)} />
+          <AntDesign name="heart" color={Colors.red} size={size} />
         </Pressable>
       ) : (
         <Pressable onPress={() => updateFav("add")}>
-          <AntDesign
-            name="hearto"
-            color={Colors.gray}
-            size={moderateScale(30)}
-          />
+          <AntDesign name="hearto" color={color} size={size} />
         </Pressable>
       )}
     </>

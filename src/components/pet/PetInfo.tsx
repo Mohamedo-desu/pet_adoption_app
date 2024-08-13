@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: moderateScale(350),
-    objectFit: "cover",
+    resizeMode: "cover",
   },
   infoContainer: {
     padding: moderateScale(10),

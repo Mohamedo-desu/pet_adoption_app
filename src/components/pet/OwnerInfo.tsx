@@ -6,13 +6,7 @@ import { moderateScale } from "react-native-size-matters";
 const OwnerInfo = ({ pet }: { pet: PETPROPS }) => {
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          gap: moderateScale(10),
-        }}
-      >
+      <View style={styles.owner}>
         <Image source={{ uri: pet.user.userImage }} style={styles.image} />
         <View>
           <Text style={styles.title} numberOfLines={2}>
@@ -58,5 +52,10 @@ const styles = StyleSheet.create({
   subTitle: {
     fontFamily: "Regular",
     color: Colors.gray,
+  },
+  owner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: moderateScale(10),
   },
 });

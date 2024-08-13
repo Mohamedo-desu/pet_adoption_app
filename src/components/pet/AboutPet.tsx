@@ -10,21 +10,9 @@ const ABOUT_LENGTH = Math.floor(DEVICE_HEIGHT / 2.5);
 const AboutPet = ({ pet }: { pet: PETPROPS }) => {
   const [readMore, setReadMore] = useState(false);
   return (
-    <View style={{ padding: moderateScale(10) }}>
-      <Text
-        style={{
-          fontFamily: "Medium",
-          fontSize: moderateScale(20),
-        }}
-      >
-        About {pet.name}
-      </Text>
-      <Text
-        style={{
-          fontFamily: "Regular",
-          fontSize: moderateScale(13),
-        }}
-      >
+    <View style={styles.container}>
+      <Text style={styles.title}>About {pet.name}</Text>
+      <Text style={styles.description}>
         {pet.about.length <= ABOUT_LENGTH
           ? pet.about
           : readMore
@@ -35,15 +23,9 @@ const AboutPet = ({ pet }: { pet: PETPROPS }) => {
       {pet.about.length > ABOUT_LENGTH && (
         <Pressable
           onPress={() => setReadMore(!readMore)}
-          style={{ marginTop: moderateScale(1) }}
+          style={styles.readMoreButton}
         >
-          <Text
-            style={{
-              fontFamily: "Regular",
-              fontSize: moderateScale(14),
-              color: Colors.secondary,
-            }}
-          >
+          <Text style={styles.readMoreText}>
             {readMore ? "Read Less" : "Read More"}
           </Text>
         </Pressable>
@@ -51,5 +33,27 @@ const AboutPet = ({ pet }: { pet: PETPROPS }) => {
     </View>
   );
 };
+
 export default AboutPet;
-const styles = StyleSheet.create({});
+
+const styles = StyleSheet.create({
+  container: {
+    padding: moderateScale(10),
+  },
+  title: {
+    fontFamily: "Medium",
+    fontSize: moderateScale(20),
+  },
+  description: {
+    fontFamily: "Regular",
+    fontSize: moderateScale(13),
+  },
+  readMoreButton: {
+    marginTop: moderateScale(1),
+  },
+  readMoreText: {
+    fontFamily: "Regular",
+    fontSize: moderateScale(14),
+    color: Colors.secondary,
+  },
+});

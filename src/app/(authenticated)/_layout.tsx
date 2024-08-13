@@ -16,6 +16,12 @@ const AuthenticatedLayout = () => {
           headerTransparent: true,
         }}
       />
+      <Stack.Screen
+        name="add_new_pet"
+        options={{
+          title: "Add New Pet",
+        }}
+      />
     </Stack>
   );
 };

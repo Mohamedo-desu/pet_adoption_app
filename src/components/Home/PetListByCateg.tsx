@@ -1,21 +1,13 @@
 import { db } from "@/config/firebaseconfig";
 import { Colors } from "@/constants/colors";
-import { useRouter } from "expo-router";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
 import { moderateScale } from "react-native-size-matters";
 
 import { PETPROPS } from "@/types/pet";
 import debounce from "@/utils/functions";
+import PetCard from "../pet/PetCard";
 import Category from "./Category";
 
 const PetListByCateg = () => {
@@ -48,30 +40,10 @@ const PetListByCateg = () => {
     debouncedGetPetList(selectedCategory);
   }, [debouncedGetPetList, selectedCategory]);
 
-  const router = useRouter();
-
   const renderItem = useCallback(({ item }: { item: PETPROPS }) => {
     if (!item) return null;
 
-    return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() =>
-          router.push({
-            pathname: "/pet_details",
-            params: { item: JSON.stringify(item) },
-          })
-        }
-        style={styles.pet}
-      >
-        <Image source={{ uri: item.imageUrl }} style={styles.image} />
-        <Text style={styles.name}>{item.name}</Text>
-        <View style={styles.info}>
-          <Text style={styles.breed}>{item.breed}</Text>
-          <Text style={styles.age}>{item.age} YRS</Text>
-        </View>
-      </TouchableOpacity>
-    );
+    return <PetCard item={item} />;
   }, []);
 
   const ListEmptyComponent = useCallback(() => {
@@ -86,7 +58,7 @@ const PetListByCateg = () => {
         }}
       >
         {!loading && (
-          <Text style={{ fontFamily: "Medium", color: Colors.gray }}>
+          <Text style={{ fontFamily: "Regular", color: Colors.gray }}>
             No pets found
           </Text>
         )}
@@ -127,38 +99,5 @@ const styles = StyleSheet.create({
   },
   container: {
     gap: moderateScale(12),
-  },
-  name: {
-    fontFamily: "Medium",
-    fontSize: moderateScale(17),
-  },
-  breed: {
-    fontFamily: "Regular",
-    color: Colors.gray,
-  },
-  age: {
-    fontFamily: "Regular",
-    color: Colors.primary,
-    backgroundColor: Colors.light_primary,
-    paddingHorizontal: moderateScale(5),
-    borderRadius: moderateScale(2),
-    fontSize: moderateScale(10),
-  },
-  image: {
-    width: moderateScale(140),
-    height: moderateScale(125),
-    resizeMode: "cover",
-    borderRadius: moderateScale(10),
-  },
-  pet: {
-    padding: moderateScale(10),
-    backgroundColor: Colors.light_gray,
-    borderRadius: moderateScale(10),
-    gap: moderateScale(2),
-  },
-  info: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
   },
 });
