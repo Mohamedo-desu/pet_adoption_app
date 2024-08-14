@@ -1,12 +1,13 @@
 import { db } from "@/config/firebaseconfig";
-import { Colors } from "@/constants/colors";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { moderateScale } from "react-native-size-matters";
 
 import { PETPROPS } from "@/types/pet";
-import debounce from "@/utils/functions";
+
+import { debounce } from "@/utils/functions";
+import ListEmpty from "../ListEmpty";
 import PetCard from "../pet/PetCard";
 import Category from "./Category";
 
@@ -48,23 +49,9 @@ const PetListByCateg = () => {
 
   const ListEmptyComponent = useCallback(() => {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          padding: moderateScale(20),
-          width: Dimensions.get("window").width,
-        }}
-      >
-        {!loading && (
-          <Text style={{ fontFamily: "Regular", color: Colors.gray }}>
-            No pets found
-          </Text>
-        )}
-      </View>
+      <ListEmpty data={petLists} loading={loading} text={"No pets found"} />
     );
-  }, [loading]);
+  }, [loading, petLists]);
 
   return (
     <View style={styles.container}>

@@ -1,3 +1,4 @@
+import ListEmpty from "@/components/ListEmpty";
 import PetCard from "@/components/pet/PetCard";
 import { db } from "@/config/firebaseconfig";
 import { Colors } from "@/constants/colors";
@@ -6,7 +7,7 @@ import { PETPROPS } from "@/types/pet";
 import { useUser } from "@clerk/clerk-expo";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { moderateScale } from "react-native-size-matters";
 const Favorite = () => {
   const { user } = useUser();
@@ -47,19 +48,11 @@ const Favorite = () => {
 
   const ListEmptyComponent = useCallback(() => {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {!loading && favPets.length === 0 && (
-          <Text style={{ fontFamily: "Regular", color: Colors.gray }}>
-            You have no favorite pets
-          </Text>
-        )}
-      </View>
+      <ListEmpty
+        data={favPets}
+        loading={loading}
+        text={"No favorite pets found"}
+      />
     );
   }, [loading, favPets]);
 

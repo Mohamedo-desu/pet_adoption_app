@@ -1,5 +1,6 @@
 import { db, storage } from "@/config/firebaseconfig";
 import { PETPROPS } from "@/types/pet";
+import { UserResource } from "@clerk/types";
 import {
   addDoc,
   arrayRemove,
@@ -41,7 +42,7 @@ export const updateFavList = async (
     console.log(error);
   }
 };
-export const submitPet = async (pet: Partial<PETPROPS>, user) => {
+export const submitPet = async (pet: Partial<PETPROPS>, user: UserResource) => {
   try {
     const docref = await addDoc(collection(db, "pets"), {});
 
@@ -61,6 +62,7 @@ export const submitPet = async (pet: Partial<PETPROPS>, user) => {
       user: {
         userImage: user?.imageUrl,
         userName: user?.fullName,
+        userId: user?.id,
       },
     });
   } catch (error) {

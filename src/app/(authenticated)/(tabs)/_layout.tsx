@@ -12,7 +12,7 @@ const _layout = () => {
           tabPress: (e) => e.preventDefault(),
         })}
       />
-      <Tabs.Screen name="inbox" />
+      <Tabs.Screen name="inbox" options={{ title: "My Chats" }} />
       <Tabs.Screen name="profile" />
     </Tabs>
   );

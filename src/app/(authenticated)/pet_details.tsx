@@ -2,10 +2,16 @@ import AboutPet from "@/components/pet/AboutPet";
 import OwnerInfo from "@/components/pet/OwnerInfo";
 import PetInfo from "@/components/pet/PetInfo";
 import PetSubInfo from "@/components/pet/PetSubInfo";
+import { db } from "@/config/firebaseconfig";
 import { Colors } from "@/constants/colors";
 import { PETPROPS } from "@/types/pet";
-import { useLocalSearchParams } from "expo-router";
+import { generateChatId } from "@/utils/functions";
+import { useUser } from "@clerk/clerk-expo";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useState } from "react";
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,8 +24,64 @@ const PetDetails = () => {
   const { item }: { item: string } = useLocalSearchParams();
   if (!item) return null;
 
+  const [loading, setLoading] = useState(false);
+
   const pet: PETPROPS = JSON.parse(item);
 
+  const { user } = useUser();
+  const router = useRouter();
+
+  const initiateChat = async () => {
+    try {
+      setLoading(true);
+      if (!user?.id || !pet?.user?.userId) {
+        throw new Error("User or pet information is missing.");
+      }
+
+      const userId = user?.id;
+      const petUserId = pet.user.userId;
+
+      const chatId = await generateChatId(userId, petUserId);
+
+      const chatDocRef = doc(db, "pet_chats", chatId);
+      const chatDoc = await getDoc(chatDocRef);
+
+      if (!chatDoc.exists()) {
+        const newChatData = {
+          id: chatId,
+          userIds: [userId, petUserId],
+          users: [
+            {
+              id: userId,
+              imageUrl: user?.imageUrl,
+              name: user?.fullName,
+            },
+            {
+              id: petUserId,
+              imageUrl: pet.user.userImage,
+              name: pet.user.userName,
+            },
+          ],
+        };
+
+        await setDoc(chatDocRef, newChatData);
+        setLoading(false);
+        router.push({
+          pathname: "/chat_screen",
+          params: { chatId },
+        });
+      } else {
+        setLoading(false);
+        router.push({
+          pathname: "/chat_screen",
+          params: { chatId },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
   return (
     <>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -30,8 +92,16 @@ const PetDetails = () => {
         <View style={{ height: moderateScale(100) }} />
       </ScrollView>
       <View style={styles.bottomContainer}>
-        <TouchableOpacity style={styles.adoptMeBtn}>
-          <Text style={styles.adoptMeBtnText}>Adopt Me</Text>
+        <TouchableOpacity
+          style={styles.adoptMeBtn}
+          onPress={initiateChat}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator size={"small"} color={Colors.white} />
+          ) : (
+            <Text style={styles.adoptMeBtnText}>Adopt Me</Text>
+          )}
         </TouchableOpacity>
       </View>
     </>

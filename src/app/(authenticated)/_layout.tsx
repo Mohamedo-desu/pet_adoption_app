@@ -22,6 +22,12 @@ const AuthenticatedLayout = () => {
           title: "Add New Pet",
         }}
       />
+      <Stack.Screen
+        name="chat_screen"
+        options={{
+          title: "Loading...",
+        }}
+      />
     </Stack>
   );
 };

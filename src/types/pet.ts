@@ -14,6 +14,7 @@ export interface PETPROPS {
   user: {
     userImage: string;
     userName: string;
+    userId: string;
   };
 }
 
@@ -27,3 +28,9 @@ export type CATEGPROPS = {
   name: string;
   imageUrl: string;
 };
+
+export interface CHATCARDPROPS {
+  chatId: string;
+  imageUrl: string;
+  name: string;
+}
