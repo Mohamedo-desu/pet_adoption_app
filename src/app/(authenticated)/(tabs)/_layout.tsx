@@ -13,7 +13,7 @@ const _layout = () => {
         })}
       />
       <Tabs.Screen name="inbox" options={{ title: "My Chats" }} />
-      <Tabs.Screen name="profile" />
+      <Tabs.Screen name="profile" options={{ title: "My Profile" }} />
     </Tabs>
   );
 };

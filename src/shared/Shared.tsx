@@ -6,10 +6,14 @@ import {
   arrayRemove,
   arrayUnion,
   collection,
+  deleteDoc,
   doc,
   getDoc,
+  getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
@@ -44,14 +48,13 @@ export const updateFavList = async (
 };
 export const submitPet = async (pet: Partial<PETPROPS>, user: UserResource) => {
   try {
-    const docref = await addDoc(collection(db, "pets"), {});
+    const docRef = await addDoc(collection(db, "pets"), {});
 
-    const id = docref.id;
-
-    let uri: string = "";
+    const id = docRef.id;
+    let uri = "";
 
     if (pet.imageUrl) {
-      uri = await uploadImage(pet.imageUrl, `pets/${user?.id}/`);
+      uri = await uploadImage(pet.imageUrl, `pets/${user?.id}/`, id);
     }
 
     await setDoc(doc(db, "pets", id), {
@@ -66,17 +69,25 @@ export const submitPet = async (pet: Partial<PETPROPS>, user: UserResource) => {
       },
     });
   } catch (error) {
+    console.error("Error submitting pet:", error);
     throw error;
   }
 };
 
-export const uploadImage = async (image: string, path: string) => {
+export const uploadImage = async (
+  image: string,
+  path: string,
+  postId: string
+) => {
   try {
     const response = await fetch(image);
-    const blob = await response.blob();
-    const fileName = image.split("/").pop();
+    if (!response.ok) {
+      throw new Error(`Failed to fetch image from ${image}`);
+    }
 
-    const storageRef = ref(storage, `${path}/${fileName}`);
+    const blob = await response.blob();
+
+    const storageRef = ref(storage, `${path}/${postId}`);
     await uploadBytesResumable(storageRef, blob);
 
     const downloadURL = await getDownloadURL(storageRef);
@@ -85,5 +96,32 @@ export const uploadImage = async (image: string, path: string) => {
   } catch (error) {
     console.error("Error uploading image:", error);
     throw error;
+  }
+};
+export const getUserPosts = async (id: string | undefined) => {
+  try {
+    const docref = collection(db, "pets");
+
+    const q = query(
+      docref,
+      where("user.userId", "==", id)
+      //orderBy("createdAt", "desc")
+    );
+    const snapShot = await getDocs(q);
+
+    const posts = snapShot.docs.map((doc) => doc.data()) as PETPROPS[];
+
+    return posts;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const deleteUserPosts = async (postId: string | undefined) => {
+  try {
+    const docref = doc(collection(db, "pets"), postId);
+
+    await deleteDoc(docref);
+  } catch (error) {
+    console.log(error);
   }
 };

@@ -3,6 +3,7 @@
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
+    "build:android": "npx eas-cli build -p android --profile preview",
     "ios": "expo run:ios",
     "web": "expo start --web",
     "publish:expo": "eas update --branch preview"

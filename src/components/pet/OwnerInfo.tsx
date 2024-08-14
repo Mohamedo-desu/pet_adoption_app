@@ -1,4 +1,3 @@
-import { SentIcon } from "@/assets/icons/icons";
 import { Colors } from "@/constants/colors";
 import { PETPROPS } from "@/types/pet";
 import { Image, StyleSheet, Text, View } from "react-native";
@@ -17,12 +16,6 @@ const OwnerInfo = ({ pet }: { pet: PETPROPS }) => {
           </Text>
         </View>
       </View>
-      <SentIcon
-        strokeWidth={1.2}
-        color={Colors.primary}
-        width={moderateScale(25)}
-        height={moderateScale(25)}
-      />
     </View>
   );
 };

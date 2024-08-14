@@ -4,6 +4,7 @@ import PetInfo from "@/components/pet/PetInfo";
 import PetSubInfo from "@/components/pet/PetSubInfo";
 import { db } from "@/config/firebaseconfig";
 import { Colors } from "@/constants/colors";
+import { deleteUserPosts } from "@/shared/Shared";
 import { PETPROPS } from "@/types/pet";
 import { generateChatId } from "@/utils/functions";
 import { useUser } from "@clerk/clerk-expo";
@@ -12,6 +13,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -82,6 +84,28 @@ const PetDetails = () => {
       setLoading(false);
     }
   };
+  const deletePost = async (postId: string) => {
+    try {
+      Alert.alert("Delete Post", "Are you sure you want to delete this post?", [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: async () => {
+            setLoading(true);
+            await deleteUserPosts(postId);
+            setLoading(false);
+            router.back();
+          },
+        },
+      ]);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
   return (
     <>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -91,18 +115,33 @@ const PetDetails = () => {
         <OwnerInfo pet={pet} />
         <View style={{ height: moderateScale(100) }} />
       </ScrollView>
+
       <View style={styles.bottomContainer}>
-        <TouchableOpacity
-          style={styles.adoptMeBtn}
-          onPress={initiateChat}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator size={"small"} color={Colors.white} />
-          ) : (
-            <Text style={styles.adoptMeBtnText}>Adopt Me</Text>
-          )}
-        </TouchableOpacity>
+        {user?.id !== pet?.user?.userId ? (
+          <TouchableOpacity
+            style={styles.adoptMeBtn}
+            onPress={initiateChat}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator size={"small"} color={Colors.white} />
+            ) : (
+              <Text style={styles.adoptMeBtnText}>Adopt Me</Text>
+            )}
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={[styles.adoptMeBtn, { backgroundColor: Colors.red }]}
+            onPress={() => deletePost(pet.id)}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator size={"small"} color={Colors.white} />
+            ) : (
+              <Text style={styles.adoptMeBtnText}>Delete</Text>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
     </>
   );

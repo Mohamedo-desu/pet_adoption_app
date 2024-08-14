@@ -28,6 +28,12 @@ const AuthenticatedLayout = () => {
           title: "Loading...",
         }}
       />
+      <Stack.Screen
+        name="my_posts"
+        options={{
+          title: "My Posts",
+        }}
+      />
     </Stack>
   );
 };

@@ -7,7 +7,11 @@ import MarkFav from "../MarkFav";
 const PetInfo = ({ pet }: { pet: PETPROPS }) => {
   return (
     <>
-      <Image source={{ uri: pet.imageUrl }} style={styles.image} />
+      <Image
+        source={{ uri: pet.imageUrl }}
+        style={styles.image}
+        resizeMode="cover"
+      />
       <View style={styles.infoContainer}>
         <View style={styles.petTexts}>
           <Text style={styles.name} numberOfLines={2}>
@@ -29,7 +33,6 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: moderateScale(350),
-    resizeMode: "cover",
   },
   infoContainer: {
     padding: moderateScale(10),
